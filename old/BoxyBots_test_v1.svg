@@ -1,0 +1,199 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 72" onload="init()">
+  <style>
+    svg { background: #000; fill: #fff; }
+    path, g { transition: .1s; }
+    .up {
+      transform: rotate(-90deg);
+    }
+    .right {
+      transform: none;
+    }
+    .down {
+      transform: rotate(90deg);
+    }
+    .left {
+      transform: rotate(-180deg);
+    }
+    .latt {
+      d: path('m0 1a1 1 0 011-1h3a1 1 0 011 1v6a1 1 0 01-1 1h-3a1 1 0 01-1-1m6-5a1 1 0 011-1h4a1 1 0 011 1v0a1 1 0 01-1 1h-4a1 1 0 01-1-1m0 4a1 1 0 011-1h0a1 1 0 011 1v0a1 1 0 01-1 1h0a1 1 0 01-1-1');
+    }
+    .ratt {
+      d: path('m0 1a1 1 0 011-1h3a1 1 0 011 1v6a1 1 0 01-1 1h-3a1 1 0 01-1-1m6-5a1 1 0 011-1h0a1 1 0 011 1v0a1 1 0 01-1 1h0a1 1 0 01-1-1m0 4a1 1 0 011-1h4a1 1 0 011 1v0a1 1 0 01-1 1h-4a1 1 0 01-1-1');
+    }
+    .lprot {
+      d: path('m0 1a1 1 0 011-1h3a1 1 0 011 1v6a1 1 0 01-1 1h-3a1 1 0 01-1-1m6-6a1 1 0 011-1h0a1 1 0 011 1v2a1 1 0 01-1 1h0a1 1 0 01-1-1m0 3a1 1 0 011-1h0a1 1 0 011 1v0a1 1 0 01-1 1h0a1 1 0 01-1-1');
+    }
+    .rprot {
+      d: path('m0 1a1 1 0 011-1h3a1 1 0 011 1v6a1 1 0 01-1 1h-3a1 1 0 01-1-1m6-5a1 1 0 011-1h0a1 1 0 011 1v0a1 1 0 01-1 1h0a1 1 0 01-1-1m0 3a1 1 0 011-1h0a1 1 0 011 1v2a1 1 0 01-1 1h0a1 1 0 01-1-1');
+    }
+  </style>
+  <g id="bx-move">
+    <path
+      id="boxer"
+      class="right"
+      style="transform-origin:4px 4px"
+      d="m0 1a1 1 0 011-1h3a1 1 0 011 1v6a1 1 0 01-1 1h-3a1 1 0 01-1-1m6-5a1 1 0 011-1h0a1 1 0 011 1v0a1 1 0 01-1 1h0a1 1 0 01-1-1m0 4a1 1 0 011-1h0a1 1 0 011 1v0a1 1 0 01-1 1h0a1 1 0 01-1-1"
+    />
+  </g>
+  <g id="rx-move">
+    <path
+      id="roxer"
+      class="left"
+      style="transform-origin:4px 4px"
+      d="m0 1a1 1 0 011-1h3a1 1 0 011 1v6a1 1 0 01-1 1h-3a1 1 0 01-1-1m6-5a1 1 0 011-1h0a1 1 0 011 1v0a1 1 0 01-1 1h0a1 1 0 01-1-1m0 4a1 1 0 011-1h0a1 1 0 011 1v0a1 1 0 01-1 1h0a1 1 0 01-1-1"
+    />
+  </g>
+  <script>
+    function init() {
+      const bx = document.getElementById('boxer')
+      const bxMove = document.getElementById('bx-move')
+      const rx = document.getElementById('roxer')
+      const rxMove = document.getElementById('rx-move')
+      let bxX = 16
+      let bxY = 32
+      let rxX = 104
+      let rxY = 32
+      const bxMoving = () => bxMove.style.transform = `translate(${bxX}px, ${bxY}px)`
+      bxMoving()
+      const rxMoving = () => rxMove.style.transform = `translate(${rxX}px, ${rxY}px)`
+      rxMoving()
+
+      window.addEventListener('keydown', function ({ code }) {
+        if (code == 'KeyW') {
+          bxY = bxY - 8
+          bx.classList.add('up')
+          bx.classList.remove('right')
+          bx.classList.remove('down')
+          bx.classList.remove('left')
+        }
+        if (code == 'KeyD') {
+          bxX = bxX + 8
+          bx.classList.remove('up')
+          bx.classList.add('right')
+          bx.classList.remove('down')
+          bx.classList.remove('left')
+        }
+        if (code == 'KeyS') {
+          bxY = bxY + 8
+          bx.classList.remove('up')
+          bx.classList.remove('right')
+          bx.classList.add('down')
+          bx.classList.remove('left')
+        }
+        if (code == 'KeyA') {
+          bxX = bxX - 8
+          bx.classList.remove('up')
+          bx.classList.remove('right')
+          bx.classList.remove('down')
+          bx.classList.add('left')
+        }
+        if (code == 'KeyC') {
+          bx.classList.remove('ratt')
+          bx.classList.remove('lprot')
+          bx.classList.remove('rprot')
+          bx.classList.add('latt')
+        }
+        if (code == 'KeyV') {
+          bx.classList.remove('latt')
+          bx.classList.remove('lprot')
+          bx.classList.remove('rprot')
+          bx.classList.add('ratt')
+        }
+        if (code == 'KeyB') {
+          bx.classList.remove('ratt')
+          bx.classList.remove('latt')
+          bx.classList.remove('rprot')
+          bx.classList.add('lprot')
+        }
+        if (code == 'KeyN') {
+          bx.classList.remove('ratt')
+          bx.classList.remove('latt')
+          bx.classList.remove('lprot')
+          bx.classList.add('rprot')
+        }
+        bxMoving()
+
+        if (code == 'ArrowUp') {
+          rxY = rxY - 8
+          rx.classList.add('up')
+          rx.classList.remove('right')
+          rx.classList.remove('down')
+          rx.classList.remove('left')
+        }
+        if (code == 'ArrowRight') {
+          rxX = rxX + 8
+          rx.classList.remove('up')
+          rx.classList.add('right')
+          rx.classList.remove('down')
+          rx.classList.remove('left')
+        }
+        if (code == 'ArrowDown') {
+          rxY = rxY + 8
+          rx.classList.remove('up')
+          rx.classList.remove('right')
+          rx.classList.add('down')
+          rx.classList.remove('left')
+        }
+        if (code == 'ArrowLeft') {
+          rxX = rxX - 8
+          rx.classList.remove('up')
+          rx.classList.remove('right')
+          rx.classList.remove('down')
+          rx.classList.add('left')
+        }
+        if (code == 'Numpad1') {
+          rx.classList.remove('ratt')
+          rx.classList.remove('lprot')
+          rx.classList.remove('rprot')
+          rx.classList.add('latt')
+        }
+        if (code == 'Numpad2') {
+          rx.classList.remove('latt')
+          rx.classList.remove('lprot')
+          rx.classList.remove('rprot')
+          rx.classList.add('ratt')
+        }
+        if (code == 'Numpad3') {
+          rx.classList.remove('ratt')
+          rx.classList.remove('latt')
+          rx.classList.remove('rprot')
+          rx.classList.add('lprot')
+        }
+        if (code == 'NumpadSubtract') {
+          rx.classList.remove('ratt')
+          rx.classList.remove('latt')
+          rx.classList.remove('lprot')
+          rx.classList.add('rprot')
+        }
+        rxMoving()
+      })
+      window.addEventListener('keyup', function ({ code }) {
+        if (code == 'KeyC') {
+          bx.classList.remove('latt')
+        }
+        if (code == 'KeyV') {
+          bx.classList.remove('ratt')
+        }
+        if (code == 'KeyB') {
+          bx.classList.remove('lprot')
+        }
+        if (code == 'KeyN') {
+          bx.classList.remove('rprot')
+        }
+
+        if (code == 'Numpad1') {
+          rx.classList.remove('latt')
+        }
+        if (code == 'Numpad2') {
+          rx.classList.remove('ratt')
+        }
+        if (code == 'Numpad3') {
+          rx.classList.remove('lprot')
+        }
+        if (code == 'NumpadSubtract') {
+          rx.classList.remove('rprot')
+        }
+      })
+    }
+  </script>
+</svg>
