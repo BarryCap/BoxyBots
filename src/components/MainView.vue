@@ -24,10 +24,10 @@
       />
     </g>
     <path class="health-bar" d="m4 4h32" />
-    <path id="p1-health" class="health-bar fill" d="m4 4h32" /> <!--m4 4h{healthValue}-->
+    <path id="p1-health" class="health-bar fill" d="m4 4h32" /> <!--`m4 4h${p1H}`-->
 
     <path class="health-bar" d="m124 4h-32" />
-    <path id="p2-health" class="health-bar fill" d="m124 4h-32" /> <!--m124 4h-{healthValue}-->
+    <path id="p2-health" class="health-bar fill" d="m124 4h-32" /> <!--`m124 4h-${p2H}`-->
   </svg>
 </template>
 
@@ -75,16 +75,16 @@ export default {
         this.p1ClassesD = 'left'
       }
       if (code == 'KeyC') {
-        this.p1ClassesA = 'latt'
+        this.p1ClassesA = 'lPunch'
       }
       if (code == 'KeyV') {
-        this.p1ClassesA = 'ratt'
+        this.p1ClassesA = 'rPunch'
       }
       if (code == 'KeyB') {
-        this.p1ClassesA = 'lprot'
+        this.p1ClassesA = 'lDefense'
       }
       if (code == 'KeyN') {
-        this.p1ClassesA = 'rprot'
+        this.p1ClassesA = 'rDefense'
       }
 
       if (code == 'ArrowUp') {
@@ -104,16 +104,16 @@ export default {
         this.p2ClassesD = 'left'
       }
       if (code == 'Numpad1') {
-        this.p2ClassesA = 'latt'
+        this.p2ClassesA = 'lPunch'
       }
       if (code == 'Numpad2') {
-        this.p2ClassesA = 'ratt'
+        this.p2ClassesA = 'rPunch'
       }
       if (code == 'Numpad3') {
-        this.p2ClassesA = 'lprot'
+        this.p2ClassesA = 'lDefense'
       }
       if (code == 'NumpadSubtract') {
-        this.p2ClassesA = 'rprot'
+        this.p2ClassesA = 'rDefense'
       }
     },
 
@@ -148,16 +148,16 @@ path, g { transition: .06s; }
 .left {
   transform: rotate(-180deg);
 }
-.latt {
+.lPunch {
   d: path('M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 2A1 1 0 016 1H9A1 1 0 0110 2V2A1 1 0 019 3H6A1 1 0 015 2M5 6A1 1 0 016 5H6A1 1 0 017 6V6A1 1 0 016 7H6A1 1 0 015 6');
 }
-.ratt {
+.rPunch {
   d: path('M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 2A1 1 0 016 1H6A1 1 0 017 2V2A1 1 0 016 3H6A1 1 0 015 2M5 6A1 1 0 016 5H9A1 1 0 0110 6V6A1 1 0 019 7H6A1 1 0 015 6');
 }
-.lprot {
+.lDefense {
   d: path('M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 1A1 1 0 016 0H6A1 1 0 017 1V3A1 1 0 016 4H6A1 1 0 015 3M5 6A1 1 0 016 5H6A1 1 0 017 6V6A1 1 0 016 7H6A1 1 0 015 6');
 }
-.rprot {
+.rDefense {
   d: path('M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 2A1 1 0 016 1H6A1 1 0 017 2V2A1 1 0 016 3H6A1 1 0 015 2M5 5A1 1 0 016 4H6A1 1 0 017 5V7A1 1 0 016 8H6A1 1 0 015 7');
 }
 .health-bar {
