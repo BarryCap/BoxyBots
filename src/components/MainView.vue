@@ -4,25 +4,30 @@
     viewBox="0 0 128 72"
   >
     <g
-      id="bx-move"
-      :style="{ transform: `translate(${bxX}px, ${bxY}px)` }"
+      id="p1-move"
+      :style="{ transform: `translate(${p1X}px, ${p1Y}px)` }"
     >
       <path
-        id="boxer"
-        :class="[bxClassesD, bxClassesA]"
+        id="p1"
+        :class="[p1ClassesD, p1ClassesA]"
         d="M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 2A1 1 0 016 1H6A1 1 0 017 2V2A1 1 0 016 3H6A1 1 0 015 2M5 6A1 1 0 016 5H6A1 1 0 017 6V6A1 1 0 016 7H6A1 1 0 015 6"
       />
     </g>
     <g
-      id="rx-move"
-      :style="{ transform: `translate(${rxX}px, ${rxY}px)` }"
+      id="p2-move"
+      :style="{ transform: `translate(${p2X}px, ${p2Y}px)` }"
     >
       <path
-        id="roxer"
-        :class="[rxClassesD, rxClassesA]"
+        id="p2"
+        :class="[p2ClassesD, p2ClassesA]"
         d="M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 2A1 1 0 016 1H6A1 1 0 017 2V2A1 1 0 016 3H6A1 1 0 015 2M5 6A1 1 0 016 5H6A1 1 0 017 6V6A1 1 0 016 7H6A1 1 0 015 6"
       />
     </g>
+    <path class="health-bar" d="m4 4h32" />
+    <path id="p1-health" class="health-bar fill" d="m4 4h32" /> <!--m4 4h{healthValue}-->
+
+    <path class="health-bar" d="m124 4h-32" />
+    <path id="p2-health" class="health-bar fill" d="m124 4h-32" /> <!--m124 4h-{healthValue}-->
   </svg>
 </template>
 
@@ -31,14 +36,14 @@ export default {
   name: 'MainView',
   expose: [],
   data: () => ({
-    bxX: 16,
-    bxY: 32,
-    rxX: 104,
-    rxY: 32,
-    bxClassesA: '',
-    rxClassesA: '',
-    bxClassesD: 'right',
-    rxClassesD: 'left',
+    p1X: 16,
+    p1Y: 32,
+    p2X: 104,
+    p2Y: 32,
+    p1ClassesA: '',
+    p2ClassesA: '',
+    p1ClassesD: 'right',
+    p2ClassesD: 'left',
   }),
 
   created () {
@@ -54,71 +59,71 @@ export default {
   methods: {
     keydown ({ code }) {
       if (code == 'KeyW') {
-        this.bxY -= 8
-        this.bxClassesD = 'up'
+        this.p1Y -= 8
+        this.p1ClassesD = 'up'
       }
       if (code == 'KeyD') {
-        this.bxX += 8
-        this.bxClassesD = 'right'
+        this.p1X += 8
+        this.p1ClassesD = 'right'
       }
       if (code == 'KeyS') {
-        this.bxY += 8
-        this.bxClassesD = 'down'
+        this.p1Y += 8
+        this.p1ClassesD = 'down'
       }
       if (code == 'KeyA') {
-        this.bxX -= 8
-        this.bxClassesD = 'left'
+        this.p1X -= 8
+        this.p1ClassesD = 'left'
       }
       if (code == 'KeyC') {
-        this.bxClassesA = 'latt'
+        this.p1ClassesA = 'latt'
       }
       if (code == 'KeyV') {
-        this.bxClassesA = 'ratt'
+        this.p1ClassesA = 'ratt'
       }
       if (code == 'KeyB') {
-        this.bxClassesA = 'lprot'
+        this.p1ClassesA = 'lprot'
       }
       if (code == 'KeyN') {
-        this.bxClassesA = 'rprot'
+        this.p1ClassesA = 'rprot'
       }
 
       if (code == 'ArrowUp') {
-        this.rxY -= 8
-        this.rxClassesD = 'up'
+        this.p2Y -= 8
+        this.p2ClassesD = 'up'
       }
       if (code == 'ArrowRight') {
-        this.rxX += 8
-        this.rxClassesD = 'right'
+        this.p2X += 8
+        this.p2ClassesD = 'right'
       }
       if (code == 'ArrowDown') {
-        this.rxY += 8
-        this.rxClassesD = 'down'
+        this.p2Y += 8
+        this.p2ClassesD = 'down'
       }
       if (code == 'ArrowLeft') {
-        this.rxX -= 8
-        this.rxClassesD = 'left'
+        this.p2X -= 8
+        this.p2ClassesD = 'left'
       }
       if (code == 'Numpad1') {
-        this.rxClassesA = 'latt'
+        this.p2ClassesA = 'latt'
       }
       if (code == 'Numpad2') {
-        this.rxClassesA = 'ratt'
+        this.p2ClassesA = 'ratt'
       }
       if (code == 'Numpad3') {
-        this.rxClassesA = 'lprot'
+        this.p2ClassesA = 'lprot'
       }
       if (code == 'NumpadSubtract') {
-        this.rxClassesA = 'rprot'
+        this.p2ClassesA = 'rprot'
       }
     },
 
     keyup ({ code }) {
       if ([ 'KeyC', 'KeyV', 'KeyB', 'KeyN' ].includes(code)) {
-        this.bxClassesA = ''
+        this.p1ClassesA = ''
       }
 
       if ([ 'Numpad1', 'Numpad2', 'Numpad3', 'NumpadSubtract' ].includes(code)) {
-        this.rxClassesA = ''
+        this.p2ClassesA = ''
       }
     },
   },
@@ -126,9 +131,9 @@ export default {
 </script>
 
 <style scoped>
-svg { background: #000; fill: #fff; }
+svg { background: #111; fill: #fff; }
 path, g { transition: .06s; }
-#boxer, #roxer {
+#p1, #p2 {
   transform-origin: 4px 4px;
 }
 .up {
@@ -154,5 +159,13 @@ path, g { transition: .06s; }
 }
 .rprot {
   d: path('M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 2A1 1 0 016 1H6A1 1 0 017 2V2A1 1 0 016 3H6A1 1 0 015 2M5 5A1 1 0 016 4H6A1 1 0 017 5V7A1 1 0 016 8H6A1 1 0 015 7');
+}
+.health-bar {
+  stroke: #000;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.health-bar.fill {
+  stroke: #fff;
 }
 </style>
