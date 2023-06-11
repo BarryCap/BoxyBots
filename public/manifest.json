@@ -1,7 +1,7 @@
 {
-  "short_name": "changeme",
-  "name": "changeme",
-  "description": "changeme",
+  "short_name": "Boxy Bots",
+  "name": "Boxy Bots",
+  "description": "Boxy Bots",
   "icons": [
     {
       "src": "favicon.ico",

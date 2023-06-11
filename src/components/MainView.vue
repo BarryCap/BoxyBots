@@ -2,8 +2,6 @@
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 128 72"
-    width="100%"
-    height="100%"
   >
     <g
       id="bx-move"
@@ -11,7 +9,7 @@
     >
       <path
         id="boxer"
-        :class="[...bxClassesD, ...bxClassesA]"
+        :class="[bxClassesD, bxClassesA]"
         d="M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 2A1 1 0 016 1H6A1 1 0 017 2V2A1 1 0 016 3H6A1 1 0 015 2M5 6A1 1 0 016 5H6A1 1 0 017 6V6A1 1 0 016 7H6A1 1 0 015 6"
       />
     </g>
@@ -21,7 +19,7 @@
     >
       <path
         id="roxer"
-        :class="[...rxClassesD, ...rxClassesA]"
+        :class="[rxClassesD, rxClassesA]"
         d="M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 2A1 1 0 016 1H6A1 1 0 017 2V2A1 1 0 016 3H6A1 1 0 015 2M5 6A1 1 0 016 5H6A1 1 0 017 6V6A1 1 0 016 7H6A1 1 0 015 6"
       />
     </g>
@@ -37,10 +35,10 @@ export default {
     bxY: 32,
     rxX: 104,
     rxY: 32,
-    bxClassesA: [],
-    rxClassesA: [],
-    bxClassesD: ['right'],
-    rxClassesD: ['left'],
+    bxClassesA: '',
+    rxClassesA: '',
+    bxClassesD: 'right',
+    rxClassesD: 'left',
   }),
 
   created () {
@@ -57,70 +55,70 @@ export default {
     keydown ({ code }) {
       if (code == 'KeyW') {
         this.bxY -= 8
-        this.bxClassesD = ['up']
+        this.bxClassesD = 'up'
       }
       if (code == 'KeyD') {
         this.bxX += 8
-        this.bxClassesD = ['right']
+        this.bxClassesD = 'right'
       }
       if (code == 'KeyS') {
         this.bxY += 8
-        this.bxClassesD = ['down']
+        this.bxClassesD = 'down'
       }
       if (code == 'KeyA') {
         this.bxX -= 8
-        this.bxClassesD = ['left']
+        this.bxClassesD = 'left'
       }
       if (code == 'KeyC') {
-        this.bxClassesA = ['latt']
+        this.bxClassesA = 'latt'
       }
       if (code == 'KeyV') {
-        this.bxClassesA = ['ratt']
+        this.bxClassesA = 'ratt'
       }
       if (code == 'KeyB') {
-        this.bxClassesA = ['lprot']
+        this.bxClassesA = 'lprot'
       }
       if (code == 'KeyN') {
-        this.bxClassesA = ['rprot']
+        this.bxClassesA = 'rprot'
       }
 
       if (code == 'ArrowUp') {
         this.rxY -= 8
-        this.rxClassesD = ['up']
+        this.rxClassesD = 'up'
       }
       if (code == 'ArrowRight') {
         this.rxX += 8
-        this.rxClassesD = ['right']
+        this.rxClassesD = 'right'
       }
       if (code == 'ArrowDown') {
         this.rxY += 8
-        this.rxClassesD = ['down']
+        this.rxClassesD = 'down'
       }
       if (code == 'ArrowLeft') {
         this.rxX -= 8
-        this.rxClassesD = ['left']
+        this.rxClassesD = 'left'
       }
       if (code == 'Numpad1') {
-        this.rxClassesA = ['latt']
+        this.rxClassesA = 'latt'
       }
       if (code == 'Numpad2') {
-        this.rxClassesA = ['ratt']
+        this.rxClassesA = 'ratt'
       }
       if (code == 'Numpad3') {
-        this.rxClassesA = ['lprot']
+        this.rxClassesA = 'lprot'
       }
       if (code == 'NumpadSubtract') {
-        this.rxClassesA = ['rprot']
+        this.rxClassesA = 'rprot'
       }
     },
 
     keyup ({ code }) {
       if ([ 'KeyC', 'KeyV', 'KeyB', 'KeyN' ].includes(code)) {
-        this.bxClassesA = []
+        this.bxClassesA = ''
       }
 
       if ([ 'Numpad1', 'Numpad2', 'Numpad3', 'NumpadSubtract' ].includes(code)) {
-        this.rxClassesA = []
+        this.rxClassesA = ''
       }
     },
   },
@@ -129,8 +127,8 @@ export default {
 
 <style scoped>
 svg { background: #000; fill: #fff; }
-path, g { transition: .1s; }
-#boxer,#roxer {
+path, g { transition: .06s; }
+#boxer, #roxer {
   transform-origin: 4px 4px;
 }
 .up {
