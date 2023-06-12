@@ -3,6 +3,7 @@
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 128 72"
   >
+    <rect class="ground" />
     <g
       id="p1-move"
       :style="{ transform: `translate(${p1X}px, ${p1Y}px)` }"
@@ -59,20 +60,28 @@ export default {
   methods: {
     keydown ({ code }) {
       if (code == 'KeyW') {
-        this.p1Y -= 8
         this.p1ClassesD = 'up'
+        if (this.p1Y > 8) {
+          this.p1Y -= 8
+        }
       }
       if (code == 'KeyD') {
-        this.p1X += 8
         this.p1ClassesD = 'right'
+        if (this.p1X < 112) {
+          this.p1X += 8
+        }
       }
       if (code == 'KeyS') {
-        this.p1Y += 8
         this.p1ClassesD = 'down'
+        if (this.p1Y < 56) {
+          this.p1Y += 8
+        }
       }
       if (code == 'KeyA') {
-        this.p1X -= 8
         this.p1ClassesD = 'left'
+        if (this.p1X > 8) {
+          this.p1X -= 8
+        }
       }
       if (code == 'KeyC') {
         this.p1ClassesA = 'lPunch'
@@ -87,21 +96,29 @@ export default {
         this.p1ClassesA = 'rDefense'
       }
 
-      if (code == 'ArrowUp') {
-        this.p2Y -= 8
+      if (code == 'ArrowUp' || code == 'KeyP') {
         this.p2ClassesD = 'up'
+        if (this.p2Y > 8) {
+          this.p2Y -= 8
+        }
       }
-      if (code == 'ArrowRight') {
-        this.p2X += 8
+      if (code == 'ArrowRight' || code == 'Quote') {
         this.p2ClassesD = 'right'
+        if (this.p2X < 112) {
+          this.p2X += 8
+        }
       }
-      if (code == 'ArrowDown') {
-        this.p2Y += 8
+      if (code == 'ArrowDown' || code == 'Semicolon') {
         this.p2ClassesD = 'down'
+        if (this.p2Y < 56) {
+          this.p2Y += 8
+        }
       }
-      if (code == 'ArrowLeft') {
-        this.p2X -= 8
+      if (code == 'ArrowLeft' || code == 'KeyL') {
         this.p2ClassesD = 'left'
+        if (this.p2X > 8) {
+          this.p2X -= 8
+        }
       }
       if (code == 'Numpad1') {
         this.p2ClassesA = 'lPunch'
@@ -131,8 +148,16 @@ export default {
 </script>
 
 <style scoped>
-svg { background: #111; fill: #fff; }
+svg { background: #000; fill: #fff; }
 path, g { transition: .06s; }
+.ground {
+  fill: #111;
+  rx: 2;
+  x: 8;
+  y: 8;
+  width: 112px;
+  height: 56px;
+}
 #p1, #p2 {
   transform-origin: 4px 4px;
 }
@@ -161,7 +186,7 @@ path, g { transition: .06s; }
   d: path('M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 2A1 1 0 016 1H6A1 1 0 017 2V2A1 1 0 016 3H6A1 1 0 015 2M5 5A1 1 0 016 4H6A1 1 0 017 5V7A1 1 0 016 8H6A1 1 0 015 7');
 }
 .health-bar {
-  stroke: #000;
+  stroke: #111;
   stroke-width: 2;
   stroke-linecap: round;
 }
