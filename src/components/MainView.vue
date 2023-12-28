@@ -10,7 +10,7 @@
     >
       <path
         id="p1"
-        :class="[p1ClassesD, p1ClassesA]"
+        :class="[p1ClassesD, p1ClassesA, p1H == 0 ? 'dead' : '']"
         d="M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 2A1 1 0 016 1H6A1 1 0 017 2V2A1 1 0 016 3H6A1 1 0 015 2M5 6A1 1 0 016 5H6A1 1 0 017 6V6A1 1 0 016 7H6A1 1 0 015 6"
       />
     </g>
@@ -20,15 +20,25 @@
     >
       <path
         id="p2"
-        :class="[p2ClassesD, p2ClassesA]"
+        :class="[p2ClassesD, p2ClassesA, p2H == 0 ? 'dead' : '']"
         d="M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 2A1 1 0 016 1H6A1 1 0 017 2V2A1 1 0 016 3H6A1 1 0 015 2M5 6A1 1 0 016 5H6A1 1 0 017 6V6A1 1 0 016 7H6A1 1 0 015 6"
       />
     </g>
-    <path class="health-bar" d="m4 4h32" />
-    <path id="p1-health" class="health-bar fill" d="m4 4h32" /> <!--`m4 4h${p1H}`-->
+    <clipPath id="p1H-clip">
+      <rect x="4" y="3" width="32" height="2" rx="1" />
+    </clipPath>
+    <g clip-path="url(#p1H-clip)">
+      <path class="health-bar" d="m4 4h32" />
+      <path id="p1-health" class="health-bar fill" :style="{ d: `path('m4 4h${p1H}')` }" />
+    </g>
 
-    <path class="health-bar" d="m124 4h-32" />
-    <path id="p2-health" class="health-bar fill" d="m124 4h-32" /> <!--`m124 4h-${p2H}`-->
+    <clipPath id="p2H-clip">
+      <rect x="92" y="3" width="32" height="2" rx="1" />
+    </clipPath>
+    <g clip-path="url(#p2H-clip)">
+      <path class="health-bar" d="m124 4h-32" />
+      <path id="p2-health" class="health-bar fill" :style="{ d: `path('m124 4h-${p2H}')` }" />
+    </g>
   </svg>
 </template>
 
@@ -41,6 +51,8 @@ export default {
     p1Y: 32,
     p2X: 104,
     p2Y: 32,
+    p1H: 32,
+    p2H: 32,
     p1ClassesA: '',
     p2ClassesA: '',
     p1ClassesD: 'right',
@@ -58,6 +70,30 @@ export default {
   },
 
   methods: {
+    damage (player, type) {
+      const otherPlayer = player == 1 ? 2 : 1
+      if (this[`p${player}ClassesD`] == 'up' && !(this[`p${otherPlayer}Y`] == this[`p${player}Y`] -8 && this[`p${player}X`] == this[`p${otherPlayer}X`])) {
+        return 1
+      }
+      if (this[`p${player}ClassesD`] == 'down' && !(this[`p${otherPlayer}Y`] == this[`p${player}Y`] +8 && this[`p${player}X`] == this[`p${otherPlayer}X`])) {
+        return 1
+      }
+      if (this[`p${player}ClassesD`] == 'left' && !(this[`p${otherPlayer}X`] == this[`p${player}X`] -8 && this[`p${player}Y`] == this[`p${otherPlayer}Y`])) {
+        return 1
+      }
+      if (this.p1ClassesD == this.p2ClassesD) {
+        return 0
+      }
+      if (this[`p${player}ClassesD`] == 'right' && this[`p${otherPlayer}ClassesD`] == 'left' && !(this[`p${otherPlayer}X`] == this[`p${player}X`] +8 && this[`p${player}Y`] == this[`p${otherPlayer}Y`])) {
+        if ('lPunch') {
+          if ('rDefense') {
+            return 0
+          } else {
+            return 1
+          }
+        }
+      }
+    },
     keydown ({ code, repeat }) {
       if (repeat) return
       if (code == 'KeyW') {
@@ -86,9 +122,22 @@ export default {
       }
       if (code == 'KeyC') {
         this.p1ClassesA = 'lPunch'
+        this.p2H -= this.damage(1, 'lPunch')
+        if (this.p1ClassesD == 'right' && this.p2X == this.p1X +8 && this.p1Y == this.p2Y && !(this.p2ClassesA == 'rDefense')) {
+          this.p2H -= 1
+        }
+        if (this.p1ClassesD == 'left' && this.p2X == this.p1X -8 && this.p1Y == this.p2Y) {
+          this.p2H -= 2
+        }
       }
       if (code == 'KeyV') {
         this.p1ClassesA = 'rPunch'
+        if (this.p1ClassesD == 'right' && this.p2X == this.p1X +8 && this.p1Y == this.p2Y && !(this.p2ClassesA == 'lDefense')) {
+          this.p2H -= 1
+        }
+        if (this.p1ClassesD == 'left' && this.p2X == this.p1X -8 && this.p1Y == this.p2Y) {
+          this.p2H -= 2
+        }
       }
       if (code == 'KeyB') {
         this.p1ClassesA = 'lDefense'
@@ -147,51 +196,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-svg { background: #000; fill: #fff; }
-path, g { transition: .06s; }
-.ground {
-  fill: #111;
-  rx: 2;
-  x: 8;
-  y: 8;
-  width: 112px;
-  height: 56px;
-}
-#p1, #p2 {
-  transform-origin: 4px 4px;
-}
-.up {
-  transform: rotate(-90deg);
-}
-.right {
-  transform: none;
-}
-.down {
-  transform: rotate(90deg);
-}
-.left {
-  transform: rotate(-180deg);
-}
-.lPunch {
-  d: path('M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 2A1 1 0 016 1H9A1 1 0 0110 2V2A1 1 0 019 3H6A1 1 0 015 2M5 6A1 1 0 016 5H6A1 1 0 017 6V6A1 1 0 016 7H6A1 1 0 015 6');
-}
-.rPunch {
-  d: path('M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 2A1 1 0 016 1H6A1 1 0 017 2V2A1 1 0 016 3H6A1 1 0 015 2M5 6A1 1 0 016 5H9A1 1 0 0110 6V6A1 1 0 019 7H6A1 1 0 015 6');
-}
-.lDefense {
-  d: path('M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 1A1 1 0 016 0H6A1 1 0 017 1V3A1 1 0 016 4H6A1 1 0 015 3M5 6A1 1 0 016 5H6A1 1 0 017 6V6A1 1 0 016 7H6A1 1 0 015 6');
-}
-.rDefense {
-  d: path('M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 2A1 1 0 016 1H6A1 1 0 017 2V2A1 1 0 016 3H6A1 1 0 015 2M5 5A1 1 0 016 4H6A1 1 0 017 5V7A1 1 0 016 8H6A1 1 0 015 7');
-}
-.health-bar {
-  stroke: #111;
-  stroke-width: 2;
-  stroke-linecap: round;
-}
-.health-bar.fill {
-  stroke: #fff;
-}
-</style>

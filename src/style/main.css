@@ -20,3 +20,53 @@ svg {
 ::selection {
   background: #ccc4;
 }
+
+svg {
+  background: #000;
+  fill: #fff;
+}
+path, g {
+  transition: .06s;
+}
+.ground {
+  fill: #111;
+  rx: 2;
+  x: 8;
+  y: 8;
+  width: 112px;
+  height: 56px;
+}
+#p1, #p2 {
+  transform-origin: 4px 4px;
+}
+.up {
+  transform: rotate(-90deg);
+}
+.right {
+  transform: none;
+}
+.down {
+  transform: rotate(90deg);
+}
+.left {
+  transform: rotate(-180deg);
+}
+.lPunch {
+  d: path('M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 2A1 1 0 016 1H9A1 1 0 0110 2V2A1 1 0 019 3H6A1 1 0 015 2M5 6A1 1 0 016 5H6A1 1 0 017 6V6A1 1 0 016 7H6A1 1 0 015 6');
+}
+.rPunch {
+  d: path('M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 2A1 1 0 016 1H6A1 1 0 017 2V2A1 1 0 016 3H6A1 1 0 015 2M5 6A1 1 0 016 5H9A1 1 0 0110 6V6A1 1 0 019 7H6A1 1 0 015 6');
+}
+.lDefense {
+  d: path('M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 1A1 1 0 016 0H6A1 1 0 017 1V3A1 1 0 016 4H6A1 1 0 015 3M5 6A1 1 0 016 5H6A1 1 0 017 6V6A1 1 0 016 7H6A1 1 0 015 6');
+}
+.rDefense {
+  d: path('M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6M5 2A1 1 0 016 1H6A1 1 0 017 2V2A1 1 0 016 3H6A1 1 0 015 2M5 5A1 1 0 016 4H6A1 1 0 017 5V7A1 1 0 016 8H6A1 1 0 015 7');
+}
+.health-bar {
+  stroke: #111;
+  stroke-width: 2;
+}
+.health-bar.fill {
+  stroke: #fff;
+}
