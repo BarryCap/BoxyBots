@@ -30,7 +30,7 @@ export default {
 
   computed: {
     classes() {
-      return [this.player.classD, this.player.h <= 0 ? 'dead' : '']
+      return [this.player.direction, this.player.h <= 0 ? 'dead' : '']
     },
     scale: () => SCALE,
     body: () => PATH_BODY,
