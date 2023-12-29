@@ -3,7 +3,7 @@
     xmlns="http://www.w3.org/2000/svg"
     :viewBox="viewBox"
   >
-    <rect class="ground" :style="{ width: mapWidth, height: mapHeight }" />
+    <rect class="ground" :width="mapWidth" :height="mapHeight" />
     <BoxyBot :player="p1" />
     <BoxyBot :player="p2" />
     <clipPath id="p1H-clip">
@@ -11,7 +11,7 @@
     </clipPath>
     <g clip-path="url(#p1H-clip)">
       <path class="health-bar" d="m4 4h32" />
-      <path id="p1-health" class="health-bar fill" :style="{ d: `path('m4 4h${Math.max(p1.h, 0)}')` }" />
+      <path id="p1-health" class="health-bar fill" :d="`m4 4h${Math.max(p1.h, 0)}`" />
     </g>
 
     <clipPath id="p2H-clip">
@@ -19,7 +19,7 @@
     </clipPath>
     <g clip-path="url(#p2H-clip)">
       <path class="health-bar" d="m124 4h-32" />
-      <path id="p2-health" class="health-bar fill" :style="{ d: `path('m124 4h-${Math.max(p2.h, 0)}')` }" />
+      <path id="p2-health" class="health-bar fill" :d="`m124 4h-${Math.max(p2.h, 0)}`" />
     </g>
   </svg>
 </template>
