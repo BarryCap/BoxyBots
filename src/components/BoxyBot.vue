@@ -1,7 +1,7 @@
 <template>
   <g
     :id="`${player.name}-move`"
-    :style="{ transform: `translate(${player.x}px, ${player.y}px)` }"
+    :style="{ transform: `translate(${player.x * scale}px, ${player.y * scale}px)` }"
   >
     <path
       :id="player.name"
@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { MOVE_SCALE } from '../utils/constants'
+
 export default {
   props: {
     player: { type: Object },
@@ -24,6 +26,10 @@ export default {
   computed: {
     classes() {
       return [this.player.classD, this.player.classA, this.player.h <= 0 ? 'dead' : '']
+    },
+
+    scale() {
+      return MOVE_SCALE
     }
   }
 }

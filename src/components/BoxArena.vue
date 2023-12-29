@@ -30,92 +30,73 @@ import BoxyBot from './BoxyBot.vue'
 export default {
   components: { BoxyBot },
   data: () => ({
-    p1: { name: 'p1', x: 16, y: 32, classD: 'right', classA: '', h: 32 },
-    p2: { name: 'p2', x: 104, y: 32, classD: 'left', classA: '', h: 32 },
+    p1: { name: 'p1', x: 2, y: 4, classD: 'right', classA: '', h: 32 },
+    p2: { name: 'p2', x: 13, y: 4, classD: 'left', classA: '', h: 32 },
   }),
 
-  created () {
+  created() {
     window.addEventListener('keyup', this.keyup)
     window.addEventListener('keydown', this.keydown)
   },
 
-  beforeUnmount () {
+  beforeUnmount() {
     window.removeEventListener('keyup', this.keyup)
     window.addEventListener('keydown', this.keydown)
   },
 
   methods: {
-    damage (playerId, type) {
-      const player = playerId == 1 ? this.p1 : this.p2
-      const otherPlayer = playerId == 1 ? this.p2 : this.p1
-      if (player.classD == 'up' && !(otherPlayer.y == player.y -8 && player.x == otherPlayer.x)) {
-        return 1
-      }
-      if (player.classD == 'down' && !(otherPlayer.y == player.y +8 && player.x == otherPlayer.x)) {
-        return 1
-      }
-      if (player.classD == 'left' && !(otherPlayer.x == player.x -8 && player.y == otherPlayer.y)) {
-        return 1
-      }
-      if (player.classD == otherPlayer.classD) {
-        return 0
-      }
-      if (player.classD == 'right' && otherPlayer.classD == 'left' && !(otherPlayer.x == player.x +8 && player.y == otherPlayer.y)) {
-        if ('lPunch') {
-          if ('rDefense') {
-            return 0
-          } else {
-            return 1
-          }
-        }
+    isPathClearFor(player) {
+      const otherPlayer = player.name == 'p1' ? this.p2 : this.p1
+      return !this.isFacingWalls(player) && !this.isFacingPlayer(player, otherPlayer)
+    },
+    isFacingWalls(player) {
+      switch (player.classD) {
+        case 'up': return player.y <= 1
+        case 'right': return player.x >= 14
+        case 'down': return player.y >= 7
+        case 'left': return player.x <= 1
       }
     },
-    keydown ({ code, repeat }) {
+    isFacingPlayer(player, otherPlayer) {
+      switch (player.classD) {
+        case 'up': return otherPlayer.y == player.y -1 && player.x == otherPlayer.x
+        case 'right': return otherPlayer.x == player.x +1 && player.y == otherPlayer.y
+        case 'down': return otherPlayer.y == player.y +1 && player.x == otherPlayer.x
+        case 'left': return otherPlayer.x == player.x -1 && player.y == otherPlayer.y
+      }
+    },
+    attack(attackingPlayer, defendingPlayer) {
+      if (this.isFacingPlayer(attackingPlayer, defendingPlayer)) {
+        defendingPlayer.h--
+      }
+    },
+    keydown({ code, repeat }) {
       // cancel repeated actions
       if (repeat) return
 
       if (code == 'KeyW') {
         this.p1.classD = 'up'
-        if (this.p1.y > 8 && !(this.p2.y == this.p1.y -8 && this.p1.x == this.p2.x)) {
-          this.p1.y -= 8
-        }
+        if (this.isPathClearFor(this.p1)) this.p1.y -= 1
       }
       if (code == 'KeyD') {
         this.p1.classD = 'right'
-        if (this.p1.x < 112 && !(this.p2.x == this.p1.x +8 && this.p1.y == this.p2.y)) {
-          this.p1.x += 8
-        }
+        if (this.isPathClearFor(this.p1)) this.p1.x += 1
       }
       if (code == 'KeyS') {
         this.p1.classD = 'down'
-        if (this.p1.y < 56 && !(this.p2.y == this.p1.y +8 && this.p1.x == this.p2.x)) {
-          this.p1.y += 8
-        }
+        if (this.isPathClearFor(this.p1)) this.p1.y += 1
       }
       if (code == 'KeyA') {
         this.p1.classD = 'left'
-        if (this.p1.x > 8 && !(this.p2.x == this.p1.x -8 && this.p1.y == this.p2.y)) {
-          this.p1.x -= 8
-        }
+        if (this.isPathClearFor(this.p1)) this.p1.x -= 1
       }
       if (code == 'KeyC') {
         this.p1.classA = 'lPunch'
-        this.p2.h -= this.damage(1, 'lPunch')
-        if (this.p1.classD == 'right' && this.p2.x == this.p1.x +8 && this.p1.y == this.p2.y && !(this.p2.classA == 'rDefense')) {
-          this.p2.h -= 1
-        }
-        if (this.p1.classD == 'left' && this.p2.x == this.p1.x -8 && this.p1.y == this.p2.y) {
-          this.p2.h -= 2
-        }
+        this.attack(this.p1, this.p2)
       }
       if (code == 'KeyV') {
         this.p1.classA = 'rPunch'
-        if (this.p1.classD == 'right' && this.p2.x == this.p1.x +8 && this.p1.y == this.p2.y && !(this.p2.classA == 'lDefense')) {
-          this.p2.h -= 1
-        }
-        if (this.p1.classD == 'left' && this.p2.x == this.p1.x -8 && this.p1.y == this.p2.y) {
-          this.p2.h -= 2
-        }
+        this.attack(this.p1, this.p2)
       }
       if (code == 'KeyB') {
         this.p1.classA = 'lDefense'
@@ -126,33 +107,27 @@ export default {
 
       if (code == 'ArrowUp' || code == 'KeyP') {
         this.p2.classD = 'up'
-        if (this.p2.y > 8 && !(this.p1.y == this.p2.y -8 && this.p2.x == this.p1.x)) {
-          this.p2.y -= 8
-        }
+        if (this.isPathClearFor(this.p2)) this.p2.y -= 1
       }
       if (code == 'ArrowRight' || code == 'Quote') {
         this.p2.classD = 'right'
-        if (this.p2.x < 112 && !(this.p1.x == this.p2.x +8 && this.p2.y == this.p1.y)) {
-          this.p2.x += 8
-        }
+        if (this.isPathClearFor(this.p2)) this.p2.x += 1
       }
       if (code == 'ArrowDown' || code == 'Semicolon') {
         this.p2.classD = 'down'
-        if (this.p2.y < 56 && !(this.p1.y == this.p2.y +8 && this.p2.x == this.p1.x)) {
-          this.p2.y += 8
-        }
+        if (this.isPathClearFor(this.p2)) this.p2.y += 1
       }
       if (code == 'ArrowLeft' || code == 'KeyL') {
         this.p2.classD = 'left'
-        if (this.p2.x > 8 && !(this.p1.x == this.p2.x -8 && this.p2.y == this.p1.y)) {
-          this.p2.x -= 8
-        }
+        if (this.isPathClearFor(this.p2)) this.p2.x -= 1
       }
       if (code == 'Numpad1') {
         this.p2.classA = 'lPunch'
+        this.attack(this.p2, this.p1)
       }
       if (code == 'Numpad2') {
         this.p2.classA = 'rPunch'
+        this.attack(this.p2, this.p1)
       }
       if (code == 'Numpad3') {
         this.p2.classA = 'lDefense'
@@ -162,7 +137,7 @@ export default {
       }
     },
 
-    keyup ({ code }) {
+    keyup({ code }) {
       if ([ 'KeyC', 'KeyV', 'KeyB', 'KeyN' ].includes(code)) {
         this.p1.classA = ''
       }
