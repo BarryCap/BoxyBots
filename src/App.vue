@@ -1,5 +1,5 @@
 <template>
-  <MainView />
+  <BoxArena />
   <div
     v-if="error"
     class="box error"
@@ -9,12 +9,12 @@
 </template>
 
 <script>
-import MainView from './components/MainView.vue'
+import BoxArena from './components/BoxArena.vue'
 
 export default {
   name: 'App',
   expose: [],
-  components: { MainView },
+  components: { BoxArena },
   data: () => ({
     error: null,
   }),
