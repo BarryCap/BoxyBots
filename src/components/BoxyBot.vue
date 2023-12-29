@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { MOVE_SCALE } from '../utils/constants'
+import { SCALE } from '../utils/constants'
 
 export default {
   props: {
@@ -27,10 +27,7 @@ export default {
     classes() {
       return [this.player.classD, this.player.classA, this.player.h <= 0 ? 'dead' : '']
     },
-
-    scale() {
-      return MOVE_SCALE
-    }
+    scale: () => SCALE
   }
 }
 </script>

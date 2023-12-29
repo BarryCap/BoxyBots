@@ -1,9 +1,9 @@
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 128 72"
+    :viewBox="viewBox"
   >
-    <rect class="ground" />
+    <rect class="ground" :style="{ width: mapWidth*scale, height: mapHeight*scale }" />
     <BoxyBot :player="p1" />
     <BoxyBot :player="p2" />
     <clipPath id="p1H-clip">
@@ -26,6 +26,7 @@
 
 <script>
 import BoxyBot from './BoxyBot.vue'
+import { ORIGIN_X, ORIGIN_Y, WIDTH, HEIGHT, SCALE } from '../utils/constants'
 
 export default {
   components: { BoxyBot },
@@ -44,6 +45,13 @@ export default {
     window.addEventListener('keydown', this.keydown)
   },
 
+  computed: {
+    viewBox: () => [ORIGIN_X, ORIGIN_Y, WIDTH, HEIGHT].map((d) => d*SCALE).join(' '),
+    mapHeight: () => HEIGHT - 2,
+    mapWidth: () => WIDTH - 2,
+    scale:() => SCALE
+  },
+
   methods: {
     isPathClearFor(player) {
       const otherPlayer = player.name == 'p1' ? this.p2 : this.p1
@@ -51,10 +59,10 @@ export default {
     },
     isFacingWalls(player) {
       switch (player.classD) {
-        case 'up': return player.y <= 1
-        case 'right': return player.x >= 14
-        case 'down': return player.y >= 7
-        case 'left': return player.x <= 1
+        case 'up': return player.y <= ORIGIN_Y + 1
+        case 'right': return player.x >= this.mapWidth
+        case 'down': return player.y >= this.mapHeight
+        case 'left': return player.x <= ORIGIN_X + 1
       }
     },
     isFacingPlayer(player, otherPlayer) {
