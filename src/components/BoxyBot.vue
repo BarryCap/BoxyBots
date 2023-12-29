@@ -6,17 +6,22 @@
     <path
       :id="player.name"
       :class="classes"
-      d="
-        M1 2A1 1 0 012 1H3A1 1 0 014 2V6A1 1 0 013 7H2A1 1 0 011 6
-        M5 2A1 1 0 016 1H6A1 1 0 017 2V2A1 1 0 016 3H6A1 1 0 015 2
-        M5 6A1 1 0 016 5H6A1 1 0 017 6V6A1 1 0 016 7H6A1 1 0 015 6
-      "
+      :d="`${body}${leftArm}${rightArm}`"
     />
   </g>
 </template>
 
 <script>
-import { SCALE } from '../utils/constants'
+import {
+  SCALE,
+  PATH_BODY,
+  PATH_LEFT_ARM_NORMAL,
+  PATH_LEFT_ARM_PUNCH,
+  PATH_LEFT_ARM_DEFENSE,
+  PATH_RIGHT_ARM_NORMAL,
+  PATH_RIGHT_ARM_PUNCH,
+  PATH_RIGHT_ARM_DEFENSE,
+} from '../utils/constants'
 
 export default {
   props: {
@@ -25,9 +30,24 @@ export default {
 
   computed: {
     classes() {
-      return [this.player.classD, this.player.classA, this.player.h <= 0 ? 'dead' : '']
+      return [this.player.classD, this.player.h <= 0 ? 'dead' : '']
     },
-    scale: () => SCALE
+    scale: () => SCALE,
+    body: () => PATH_BODY,
+    leftArm() {
+      switch (this.player.action) {
+        case 'lPunch': return PATH_LEFT_ARM_PUNCH
+        case 'lDefense': return PATH_LEFT_ARM_DEFENSE
+        default: return PATH_LEFT_ARM_NORMAL
+      }
+    },
+    rightArm() {
+      switch (this.player.action) {
+        case 'rPunch': return PATH_RIGHT_ARM_PUNCH
+        case 'rDefense': return PATH_RIGHT_ARM_DEFENSE
+        default: return PATH_RIGHT_ARM_NORMAL
+      }
+    },
   }
 }
 </script>

@@ -31,8 +31,8 @@ import { ORIGIN_X, ORIGIN_Y, WIDTH, HEIGHT, SCALE } from '../utils/constants'
 export default {
   components: { BoxyBot },
   data: () => ({
-    p1: { name: 'p1', x: 2, y: 4, classD: 'right', classA: '', h: 32 },
-    p2: { name: 'p2', x: 13, y: 4, classD: 'left', classA: '', h: 32 },
+    p1: { name: 'p1', x: 2, y: 4, classD: 'right', action: '', h: 32 },
+    p2: { name: 'p2', x: 13, y: 4, classD: 'left', action: '', h: 32 },
   }),
 
   created() {
@@ -99,18 +99,18 @@ export default {
         if (this.isPathClearFor(this.p1)) this.p1.x -= 1
       }
       if (code == 'KeyC') {
-        this.p1.classA = 'lPunch'
+        this.p1.action = 'lPunch'
         this.attack(this.p1, this.p2)
       }
       if (code == 'KeyV') {
-        this.p1.classA = 'rPunch'
+        this.p1.action = 'rPunch'
         this.attack(this.p1, this.p2)
       }
       if (code == 'KeyB') {
-        this.p1.classA = 'lDefense'
+        this.p1.action = 'lDefense'
       }
       if (code == 'KeyN') {
-        this.p1.classA = 'rDefense'
+        this.p1.action = 'rDefense'
       }
 
       if (code == 'ArrowUp' || code == 'KeyP') {
@@ -130,28 +130,28 @@ export default {
         if (this.isPathClearFor(this.p2)) this.p2.x -= 1
       }
       if (code == 'Numpad1') {
-        this.p2.classA = 'lPunch'
+        this.p2.action = 'lPunch'
         this.attack(this.p2, this.p1)
       }
       if (code == 'Numpad2') {
-        this.p2.classA = 'rPunch'
+        this.p2.action = 'rPunch'
         this.attack(this.p2, this.p1)
       }
       if (code == 'Numpad3') {
-        this.p2.classA = 'lDefense'
+        this.p2.action = 'lDefense'
       }
       if (code == 'NumpadSubtract') {
-        this.p2.classA = 'rDefense'
+        this.p2.action = 'rDefense'
       }
     },
 
     keyup({ code }) {
       if ([ 'KeyC', 'KeyV', 'KeyB', 'KeyN' ].includes(code)) {
-        this.p1.classA = ''
+        this.p1.action = ''
       }
 
       if ([ 'Numpad1', 'Numpad2', 'Numpad3', 'NumpadSubtract' ].includes(code)) {
-        this.p2.classA = ''
+        this.p2.action = ''
       }
     },
   },
