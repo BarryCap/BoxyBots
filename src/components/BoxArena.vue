@@ -28,24 +28,23 @@
 import BoxyBot from './BoxyBot.vue'
 import {
   ORIGIN_X, ORIGIN_Y, WIDTH, HEIGHT, MAP_WIDTH, MAP_HEIGHT, SCALE,
-  KEY_TYPES, ACTIONS, MOVEMENTS, KEY_MAP,
+  KEY_TYPES, MOVEMENTS, KEY_MAP,
+  ACTION_DURATION, ACTION_RELOAD,
 } from '../utils/constants'
 import { isAttackAverted, isAttackingBody, isFacingPlayer, isFacingWalls } from '../utils/conditions'
 
 export default {
   components: { BoxyBot },
   data: () => ({
-    p1: { name: 'p1', x: 2, y: 4, direction: 'right', action: '', h: 32 },
-    p2: { name: 'p2', x: 13, y: 4, direction: 'left', action: '', h: 32 },
+    p1: { name: 'p1', x: 2, y: 4, h: 32, direction: 'right', action: '', isReloading: false, nextArm: 'l' },
+    p2: { name: 'p2', x: 13, y: 4, h: 32, direction: 'left', action: '', isReloading: false, nextArm: 'r' },
   }),
 
   created() {
-    window.addEventListener('keyup', this.keyup)
     window.addEventListener('keydown', this.keydown)
   },
 
   beforeUnmount() {
-    window.removeEventListener('keyup', this.keyup)
     window.removeEventListener('keydown', this.keydown)
   },
 
@@ -93,20 +92,17 @@ export default {
                 }
               }
             } else {
-              player.action = type
-              if (type == 'lPunch' || type == 'rPunch') {
+              if (player.isReloading) return
+              player.action = `${player.nextArm}${type}`
+              player.nextArm = player.nextArm == 'l' ? 'r' : 'l'
+              player.isReloading = true
+              setTimeout(() => player.action = '', ACTION_DURATION)
+              setTimeout(() => player.isReloading = false, ACTION_RELOAD)
+              if (type == 'Punch') {
                 this.attack(player)
               }
             }
           })
-      })
-    },
-
-    keyup({ code }) {
-      [this.p1, this.p2].forEach((player) => {
-        if (ACTIONS.some((action) => KEY_MAP[player.name][action].includes(code))) {
-          player.action = ''
-        }
       })
     },
   },

@@ -16,7 +16,7 @@ export const PATH_RIGHT_ARM_PUNCH = 'M5 6A1 1 0 016 5H9A1 1 0 0110 6V6A1 1 0 019
 export const PATH_RIGHT_ARM_DEFENSE = 'M5 5A1 1 0 016 4H6A1 1 0 017 5V7A1 1 0 016 8H6A1 1 0 015 7'
 
 export const MOVEMENTS = ['up', 'right', 'down', 'left']
-export const ACTIONS = ['lPunch', 'rPunch', 'lDefense', 'rDefense']
+export const ACTIONS = ['Punch', 'Defense']
 export const KEY_TYPES = [...MOVEMENTS, ...ACTIONS]
 
 export const KEY_MAP = {
@@ -25,19 +25,18 @@ export const KEY_MAP = {
     right: ['KeyD'],
     down: ['KeyS'],
     left: ['KeyA'],
-    lPunch: ['KeyC'],
-    rPunch: ['KeyV'],
-    lDefense: ['KeyB'],
-    rDefense: ['KeyN'],
+    Punch: ['KeyC'],
+    Defense: ['KeyV'],
   },
   p2: {
     up: ['ArrowUp', 'KeyP'],
     right: ['ArrowRight', 'Quote'],
     down: ['ArrowDown', 'Semicolon'],
     left: ['ArrowLeft', 'KeyL'],
-    lPunch: ['Numpad1'],
-    rPunch: ['Numpad2'],
-    lDefense: ['Numpad3'],
-    rDefense: ['NumpadSubtract'],
+    Punch: ['Numpad1'],
+    Defense: ['Numpad2'],
   }
 }
+
+export const ACTION_DURATION = 120
+export const ACTION_RELOAD = 120
