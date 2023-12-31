@@ -3,7 +3,7 @@
     xmlns="http://www.w3.org/2000/svg"
     :viewBox="viewBox"
   >
-    <rect class="ground" :width="mapWidth" :height="mapHeight" />
+    <rect class="ground" rx="2" x="8" y="8" :width="mapWidth" :height="mapHeight" />
     <BoxyBot :player="p1" />
     <BoxyBot :player="p2" />
     <clipPath id="p1H-clip">
@@ -26,7 +26,10 @@
 
 <script>
 import BoxyBot from './BoxyBot.vue'
-import { ORIGIN_X, ORIGIN_Y, WIDTH, HEIGHT, MAP_WIDTH, MAP_HEIGHT, SCALE } from '../utils/constants'
+import {
+  ORIGIN_X, ORIGIN_Y, WIDTH, HEIGHT, MAP_WIDTH, MAP_HEIGHT, SCALE,
+  KEY_TYPES, ACTIONS, MOVEMENTS, KEY_MAP,
+} from '../utils/constants'
 import { isAttackAverted, isAttackingBody, isFacingPlayer, isFacingWalls } from '../utils/conditions'
 
 export default {
@@ -54,11 +57,14 @@ export default {
   },
 
   methods: {
-    isPathClearFor(player) {
-      const otherPlayer = player.name == 'p1' ? this.p2 : this.p1
-      return !isFacingWalls(player) && !isFacingPlayer(player, otherPlayer)
+    getOtherPlayer(player) {
+      return player.name == 'p1' ? this.p2 : this.p1
     },
-    attack(attackingPlayer, defendingPlayer) {
+    isPathClearFor(player) {
+      return !isFacingWalls(player) && !isFacingPlayer(player, this.getOtherPlayer(player))
+    },
+    attack(attackingPlayer) {
+      const defendingPlayer = this.getOtherPlayer(attackingPlayer)
       if (isFacingPlayer(attackingPlayer, defendingPlayer)) {
         if (isAttackAverted(attackingPlayer, defendingPlayer)) return
         // in case of body attack, one more damage
@@ -72,77 +78,36 @@ export default {
       // cancel repeated actions
       if (repeat) return
 
-      if (code == 'KeyW') {
-        this.p1.direction = 'up'
-        if (this.isPathClearFor(this.p1)) this.p1.y -= 1
-      }
-      if (code == 'KeyD') {
-        this.p1.direction = 'right'
-        if (this.isPathClearFor(this.p1)) this.p1.x += 1
-      }
-      if (code == 'KeyS') {
-        this.p1.direction = 'down'
-        if (this.isPathClearFor(this.p1)) this.p1.y += 1
-      }
-      if (code == 'KeyA') {
-        this.p1.direction = 'left'
-        if (this.isPathClearFor(this.p1)) this.p1.x -= 1
-      }
-      if (code == 'KeyC') {
-        this.p1.action = 'lPunch'
-        this.attack(this.p1, this.p2)
-      }
-      if (code == 'KeyV') {
-        this.p1.action = 'rPunch'
-        this.attack(this.p1, this.p2)
-      }
-      if (code == 'KeyB') {
-        this.p1.action = 'lDefense'
-      }
-      if (code == 'KeyN') {
-        this.p1.action = 'rDefense'
-      }
-
-      if (code == 'ArrowUp' || code == 'KeyP') {
-        this.p2.direction = 'up'
-        if (this.isPathClearFor(this.p2)) this.p2.y -= 1
-      }
-      if (code == 'ArrowRight' || code == 'Quote') {
-        this.p2.direction = 'right'
-        if (this.isPathClearFor(this.p2)) this.p2.x += 1
-      }
-      if (code == 'ArrowDown' || code == 'Semicolon') {
-        this.p2.direction = 'down'
-        if (this.isPathClearFor(this.p2)) this.p2.y += 1
-      }
-      if (code == 'ArrowLeft' || code == 'KeyL') {
-        this.p2.direction = 'left'
-        if (this.isPathClearFor(this.p2)) this.p2.x -= 1
-      }
-      if (code == 'Numpad1') {
-        this.p2.action = 'lPunch'
-        this.attack(this.p2, this.p1)
-      }
-      if (code == 'Numpad2') {
-        this.p2.action = 'rPunch'
-        this.attack(this.p2, this.p1)
-      }
-      if (code == 'Numpad3') {
-        this.p2.action = 'lDefense'
-      }
-      if (code == 'NumpadSubtract') {
-        this.p2.action = 'rDefense'
-      }
+      [this.p1, this.p2].forEach((player) => {
+        KEY_TYPES
+          .filter((type) => KEY_MAP[player.name][type].includes(code))
+          .forEach((type) => {
+            if (MOVEMENTS.includes(type)) {
+              player.direction = type
+              if (this.isPathClearFor(player)) {
+                switch (type) {
+                  case 'up': return player.y--
+                  case 'right': return player.x++
+                  case 'down': return player.y++
+                  case 'left': return player.x--
+                }
+              }
+            } else {
+              player.action = type
+              if (type == 'lPunch' || type == 'rPunch') {
+                this.attack(player)
+              }
+            }
+          })
+      })
     },
 
     keyup({ code }) {
-      if ([ 'KeyC', 'KeyV', 'KeyB', 'KeyN' ].includes(code)) {
-        this.p1.action = ''
-      }
-
-      if ([ 'Numpad1', 'Numpad2', 'Numpad3', 'NumpadSubtract' ].includes(code)) {
-        this.p2.action = ''
-      }
+      [this.p1, this.p2].forEach((player) => {
+        if (ACTIONS.some((action) => KEY_MAP[player.name][action].includes(code))) {
+          player.action = ''
+        }
+      })
     },
   },
 }
