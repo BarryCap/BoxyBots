@@ -15,7 +15,7 @@ pnpm install
 pnpm start
 ```
 
-# Developpement
+# Development
 
 The main code is found in `src/components/`. The styling is in `src/main.css`.
 

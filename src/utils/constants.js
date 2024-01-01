@@ -33,8 +33,8 @@ export const KEY_MAP = {
     right: ['ArrowRight', 'Quote'],
     down: ['ArrowDown', 'Semicolon'],
     left: ['ArrowLeft', 'KeyL'],
-    Punch: ['Numpad1'],
-    Defense: ['Numpad2'],
+    Punch: ['Numpad1', 'Numpad0', 'KeyM'],
+    Defense: ['Numpad2', 'NumpadDecimal', 'Comma'],
   }
 }
 
