@@ -25,7 +25,7 @@ export const KEY_MAP = {
     right: ['KeyD'],
     down: ['KeyS'],
     left: ['KeyA'],
-    Punch: ['KeyC'],
+    Punch: ['KeyC', 'Space'],
     Defense: ['KeyV'],
   },
   p2: {
