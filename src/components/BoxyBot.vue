@@ -2,6 +2,7 @@
   <g
     :style="{
       fill: player.color,
+      filter: `drop-shadow(0 0 1px ${player.color}4)`,
       transform: `translate(${player.x * scale}px, ${player.y * scale}px)`,
     }"
   >

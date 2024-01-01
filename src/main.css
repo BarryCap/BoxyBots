@@ -23,6 +23,39 @@ path, g { transition: .06s; }
 
 .ground { fill: #111; }
 
+.wall {
+  fill: #222;
+  rx: 1;
+  transform: translate(1px, 1px);
+  width: 6px;
+  height: 6px;
+}
+.water {
+  fill: #023;
+  rx: 1;
+  transform: translate(-1px, -1px);
+  width: 10px;
+  height: 10px;
+}
+.fire circle {
+  fill: #820;
+  filter: drop-shadow(0 0 1px #820);
+}
+.fire rect {
+  fill: #410;
+  rx: 1;
+  transform: translate(-1px, -1px);
+  width: 10px;
+  height: 10px;
+}
+.shadow {
+  fill: #000;
+  rx: 1;
+  transform: translate(-1px, -1px);
+  width: 10px;
+  height: 10px;
+}
+
 #p1, #p2 { transform-origin: 4px 4px; }
 
 .dead { opacity: .1; }

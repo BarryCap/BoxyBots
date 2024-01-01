@@ -4,6 +4,18 @@
     :viewBox="viewBox"
   >
     <rect class="ground" rx="2" x="8" y="8" :width="mapWidth" :height="mapHeight" />
+    <rect class="wall" x="24" y="40" />
+    <rect class="wall" x="24" y="32" />
+    <rect class="wall" x="16" y="40" />
+    <rect class="water" x="40" y="32" />
+    <rect class="water" x="40" y="24" />
+    <rect class="water" x="48" y="24" />
+    <FireCell x="64" y="32" />
+    <FireCell x="72" y="32" />
+    <FireCell x="72" y="24" />
+    <rect class="shadow" x="88" y="32" />
+    <rect class="shadow" x="88" y="40" />
+    <rect class="shadow" x="112" y="40" />
     <BoxyBot :player="p1" />
     <BoxyBot :player="p2" />
     <clipPath id="p1H-clip">
@@ -26,6 +38,7 @@
 
 <script>
 import BoxyBot from './BoxyBot.vue'
+import FireCell from './FireCell.vue'
 import {
   ORIGIN_X, ORIGIN_Y, WIDTH, HEIGHT, MAP_WIDTH, MAP_HEIGHT, SCALE,
   KEY_TYPES, MOVEMENTS, KEY_MAP,
@@ -35,7 +48,7 @@ import {
 import { isAttackAverted, isAttackingBody, isFacingPlayer, isFacingWalls } from '../utils/conditions'
 
 export default {
-  components: { BoxyBot },
+  components: { BoxyBot, FireCell },
   data: () => ({
     p1: DEFAULT_P1,
     p2: DEFAULT_P2,
