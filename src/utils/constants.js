@@ -19,6 +19,9 @@ export const MOVEMENTS = ['up', 'right', 'down', 'left']
 export const ACTIONS = ['Punch', 'Defense']
 export const KEY_TYPES = [...MOVEMENTS, ...ACTIONS]
 
+export const DEFAULT_P1 = { name: 'p1', x: 2, y: 4, h: 32, direction: 'right', nextArm: 'l', color: '#ff0' }
+export const DEFAULT_P2 = { name: 'p2', x: 13, y: 4, h: 32, direction: 'left', nextArm: 'r', color: '#0ff' }
+
 export const KEY_MAP = {
   p1: {
     up: ['KeyW'],

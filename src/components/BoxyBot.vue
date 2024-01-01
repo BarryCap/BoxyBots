@@ -1,7 +1,9 @@
 <template>
   <g
-    :id="`${player.name}-move`"
-    :style="{ transform: `translate(${player.x * scale}px, ${player.y * scale}px)` }"
+    :style="{
+      fill: player.color,
+      transform: `translate(${player.x * scale}px, ${player.y * scale}px)`,
+    }"
   >
     <path
       :id="player.name"

@@ -25,9 +25,6 @@ path, g { transition: .06s; }
 
 #p1, #p2 { transform-origin: 4px 4px; }
 
-#p1 { fill: #ff0; }
-#p2 { fill: #0ff; }
-
 .dead { opacity: .1; }
 
 .up { transform: rotate(-90deg); }
@@ -39,6 +36,3 @@ path, g { transition: .06s; }
   stroke: #111;
   stroke-width: 2;
 }
-
-#p1-health { stroke: #ff0; }
-#p2-health { stroke: #0ff; }

@@ -11,7 +11,7 @@
     </clipPath>
     <g clip-path="url(#p1H-clip)">
       <path class="health-bar" d="m4 4h32" />
-      <path id="p1-health" class="health-bar" :d="`m4 4h${Math.max(p1.h, 0)}`" />
+      <path class="health-bar" :d="`m4 4h${Math.max(p1.h, 0)}`" :style="{ stroke: p1.color }" />
     </g>
 
     <clipPath id="p2H-clip">
@@ -19,7 +19,7 @@
     </clipPath>
     <g clip-path="url(#p2H-clip)">
       <path class="health-bar" d="m124 4h-32" />
-      <path id="p2-health" class="health-bar" :d="`m124 4h-${Math.max(p2.h, 0)}`" />
+      <path class="health-bar" :d="`m124 4h-${Math.max(p2.h, 0)}`" :style="{ stroke: p2.color }" />
     </g>
   </svg>
 </template>
@@ -30,14 +30,15 @@ import {
   ORIGIN_X, ORIGIN_Y, WIDTH, HEIGHT, MAP_WIDTH, MAP_HEIGHT, SCALE,
   KEY_TYPES, MOVEMENTS, KEY_MAP,
   ACTION_DURATION, ACTION_RELOAD,
+  DEFAULT_P1, DEFAULT_P2,
 } from '../utils/constants'
 import { isAttackAverted, isAttackingBody, isFacingPlayer, isFacingWalls } from '../utils/conditions'
 
 export default {
   components: { BoxyBot },
   data: () => ({
-    p1: { name: 'p1', x: 2, y: 4, h: 32, direction: 'right', action: '', isReloading: false, nextArm: 'l' },
-    p2: { name: 'p2', x: 13, y: 4, h: 32, direction: 'left', action: '', isReloading: false, nextArm: 'r' },
+    p1: DEFAULT_P1,
+    p2: DEFAULT_P2,
   }),
 
   created() {
