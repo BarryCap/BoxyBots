@@ -40,7 +40,7 @@
 import BoxyBot from './BoxyBot.vue'
 import FireCell from './FireCell.vue'
 import {
-  ORIGIN_X, ORIGIN_Y, WIDTH, HEIGHT, MAP_WIDTH, MAP_HEIGHT, SCALE,
+  MIN_X, MIN_Y, WIDTH, HEIGHT, MAP_WIDTH, MAP_HEIGHT, SCALE,
   KEY_TYPES, MOVEMENTS, KEY_MAP,
   ACTION_DURATION, ACTION_RELOAD,
   DEFAULT_P1, DEFAULT_P2,
@@ -63,7 +63,7 @@ export default {
   },
 
   computed: {
-    viewBox: () => [ORIGIN_X, ORIGIN_Y, WIDTH, HEIGHT].map((d) => d*SCALE).join(' '),
+    viewBox: () => [MIN_X, MIN_Y, WIDTH, HEIGHT].map((d) => d*SCALE).join(' '),
     mapHeight: () => MAP_HEIGHT * SCALE,
     mapWidth: () => MAP_WIDTH * SCALE,
     scale:() => SCALE
