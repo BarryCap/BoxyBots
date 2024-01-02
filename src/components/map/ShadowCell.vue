@@ -13,7 +13,7 @@ export default {
 
 <style scoped>
 rect {
-  fill: #000;
+  fill: #080808;
   rx: 1;
   transform: translate(-1px, -1px);
   width: 10px;

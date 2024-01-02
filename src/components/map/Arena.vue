@@ -1,8 +1,11 @@
 <template>
+  <clipPath id="map-clip">
+    <rect class="ground" :width="mapWidth" :height="mapHeight" />
+  </clipPath>
   <rect class="ground" :width="mapWidth" :height="mapHeight" />
-  <template v-for="cell in cells">
-    <component :is="cell.component" :x="cell.x" :y="cell.y" />
-  </template>
+  <g clip-path="url(#map-clip)">
+    <component v-for="cell in cells" :is="cell.component" :x="cell.x" :y="cell.y" />
+  </g>
 </template>
 
 <script>
@@ -31,7 +34,7 @@ export default {
         [...line].forEach((type, x) => {
           const component = components[type]
           if (component) {
-            cells.push({ component, x: (x+1)*SCALE, y: (y+1)*SCALE })
+            cells.push({ component, x: (x + 1) * SCALE, y: (y + 1) * SCALE })
           }
         })
       })
