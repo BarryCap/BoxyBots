@@ -54,3 +54,11 @@ export default {
   }
 }
 </script>
+<style scoped>
+.dead { opacity: .1; }
+
+.up { transform: rotate(-90deg); }
+.right { transform: none; }
+.down { transform: rotate(90deg); }
+.left { transform: rotate(-180deg); }
+</style>

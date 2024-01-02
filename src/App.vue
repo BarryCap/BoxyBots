@@ -1,5 +1,5 @@
 <template>
-  <BoxArena />
+  <GameScene />
   <div
     v-if="error"
     class="box error"
@@ -9,12 +9,12 @@
 </template>
 
 <script>
-import BoxArena from './components/BoxArena.vue'
+import GameScene from './GameScene.vue'
 
 export default {
   name: 'App',
   expose: [],
-  components: { BoxArena },
+  components: { GameScene },
   data: () => ({
     error: null,
   }),

@@ -1,5 +1,5 @@
 <template>
-  <g class="fire" :transform="`translate(${x} ${y})`">
+  <g :transform="`translate(${x} ${y})`">
     <rect>
       <animate attributeName="opacity" values="1;.2;1;.8;.2;.9;.2;.6;0;.3" dur="1.1" repeatCount="indefinite" />
     </rect>
@@ -33,8 +33,22 @@
 <script>
 export default {
   props: {
-    x: { type: Number },
-    y: { type: Number },
+    x: { type: String },
+    y: { type: String },
   },
 }
 </script>
+
+<style scoped>
+circle {
+  fill: #820;
+  filter: drop-shadow(0 0 1px #820);
+}
+rect {
+  fill: #410;
+  rx: 1;
+  transform: translate(-1px, -1px);
+  width: 10px;
+  height: 10px;
+}
+</style>

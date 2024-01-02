@@ -3,19 +3,7 @@
     xmlns="http://www.w3.org/2000/svg"
     :viewBox="viewBox"
   >
-    <rect class="ground" rx="2" x="8" y="8" :width="mapWidth" :height="mapHeight" />
-    <rect class="wall" x="24" y="40" />
-    <rect class="wall" x="24" y="32" />
-    <rect class="wall" x="16" y="40" />
-    <rect class="water" x="40" y="32" />
-    <rect class="water" x="40" y="24" />
-    <rect class="water" x="48" y="24" />
-    <FireCell x="64" y="32" />
-    <FireCell x="72" y="32" />
-    <FireCell x="72" y="24" />
-    <rect class="shadow" x="88" y="32" />
-    <rect class="shadow" x="88" y="40" />
-    <rect class="shadow" x="112" y="40" />
+    <ArenaVue :map="map" />
     <BoxyBot :player="p1" />
     <BoxyBot :player="p2" />
     <clipPath id="p1H-clip">
@@ -37,19 +25,21 @@
 </template>
 
 <script>
-import BoxyBot from './BoxyBot.vue'
-import FireCell from './FireCell.vue'
+import BoxyBot from './components/BoxyBot.vue'
+import ArenaVue from './components/map/Arena.vue'
 import {
   MIN_X, MIN_Y, WIDTH, HEIGHT, MAP_WIDTH, MAP_HEIGHT, SCALE,
   KEY_TYPES, MOVEMENTS, KEY_MAP,
   ACTION_DURATION, ACTION_RELOAD,
   DEFAULT_P1, DEFAULT_P2,
-} from '../utils/constants'
-import { isAttackAverted, isAttackingBody, isFacingPlayer, isFacingWalls } from '../utils/conditions'
+} from './utils/constants'
+import { isAttackAverted, isAttackingBody, isFacingPlayer, isFacingWalls } from './utils/conditions'
+import { MAP_1 } from './utils/maps'
 
 export default {
-  components: { BoxyBot, FireCell },
+  components: { BoxyBot, ArenaVue },
   data: () => ({
+    map: MAP_1,
     p1: DEFAULT_P1,
     p2: DEFAULT_P2,
   }),
@@ -92,31 +82,30 @@ export default {
       if (repeat) return
 
       [this.p1, this.p2].forEach((player) => {
-        KEY_TYPES
-          .filter((type) => KEY_MAP[player.name][type].includes(code))
-          .forEach((type) => {
-            if (MOVEMENTS.includes(type)) {
-              player.direction = type
-              if (this.isPathClearFor(player)) {
-                switch (type) {
-                  case 'up': return player.y--
-                  case 'right': return player.x++
-                  case 'down': return player.y++
-                  case 'left': return player.x--
-                }
-              }
-            } else {
-              if (player.isReloading) return
-              player.action = `${player.nextArm}${type}`
-              player.nextArm = player.nextArm == 'l' ? 'r' : 'l'
-              player.isReloading = true
-              setTimeout(() => player.action = '', ACTION_DURATION)
-              setTimeout(() => player.isReloading = false, ACTION_RELOAD)
-              if (type == 'Punch') {
-                this.attack(player)
+        const keyPressType = KEY_TYPES.find((type) => KEY_MAP[player.name][type].includes(code))
+        if (keyPressType) {
+          if (MOVEMENTS.includes(keyPressType)) {
+            player.direction = keyPressType
+            if (this.isPathClearFor(player)) {
+              switch (keyPressType) {
+                case 'up': return player.y--
+                case 'right': return player.x++
+                case 'down': return player.y++
+                case 'left': return player.x--
               }
             }
-          })
+          } else {
+            if (player.isReloading) return
+            player.action = `${player.nextArm}${keyPressType}`
+            player.nextArm = player.nextArm == 'l' ? 'r' : 'l'
+            player.isReloading = true
+            setTimeout(() => player.action = '', ACTION_DURATION)
+            setTimeout(() => player.isReloading = false, ACTION_RELOAD)
+            if (keyPressType == 'Punch') {
+              this.attack(player)
+            }
+          }
+        }
       })
     },
   },
