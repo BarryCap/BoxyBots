@@ -75,8 +75,8 @@
 <script>
 export default {
   props: {
-    x: { type: String },
-    y: { type: String },
+    x: { type: Number },
+    y: { type: Number },
   },
 }
 </script>

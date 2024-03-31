@@ -1,11 +1,12 @@
 import { MIN_X, MIN_Y, MAP_HEIGHT, MAP_WIDTH } from './constants'
 
-export const isFacingWalls = (player) => {
+export const isFacingWalls = (player, map) => {
+  console.log(player.x, player.y, map[player.y - 1][player.x - 1])
   switch (player.direction) {
-    case 'up': return player.y <= MIN_Y + 1
-    case 'right': return player.x >= MAP_WIDTH
-    case 'down': return player.y >= MAP_HEIGHT
-    case 'left': return player.x <= MIN_X + 1
+    case 'up': return player.y <= MIN_Y + 1 || map[player.y - 2][player.x - 1] == 'x'
+    case 'right': return player.x >= MAP_WIDTH || map[player.y - 1][player.x] == 'x'
+    case 'down': return player.y >= MAP_HEIGHT || map[player.y][player.x - 1] == 'x'
+    case 'left': return player.x <= MIN_X + 1 || map[player.y - 1][player.x - 2] == 'x'
   }
 }
 

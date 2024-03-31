@@ -64,7 +64,7 @@ export default {
       return player.name == 'p1' ? this.p2 : this.p1
     },
     isPathClearFor(player) {
-      return !isFacingWalls(player) && !isFacingPlayer(player, this.getOtherPlayer(player))
+      return !isFacingWalls(player, this.map) && !isFacingPlayer(player, this.getOtherPlayer(player))
     },
     attack(attackingPlayer) {
       const defendingPlayer = this.getOtherPlayer(attackingPlayer)
