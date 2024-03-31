@@ -16,6 +16,7 @@
 
 <script>
 import {
+  FIRE_DAMAGE_INTERVAL,
   SCALE,
   PATH_BODY,
   PATH_LEFT_ARM_NORMAL,
@@ -27,13 +28,25 @@ import {
 } from '../utils/constants'
 
 export default {
-  props: {
-    player: { type: Object },
+  props: { player: { type: Object }},
+
+  data: () => ({ interval: null }),
+
+  watch: {
+    'player.state'(state) {
+      if (state === 'fire') {
+        this.interval = setInterval(() => {
+          this.player.h--
+        }, FIRE_DAMAGE_INTERVAL)
+      } else {
+        clearInterval(this.interval)
+      }
+    }
   },
 
   computed: {
     classes() {
-      return [this.player.direction, this.player.h <= 0 ? 'dead' : '']
+      return [this.player.direction, this.player.h <= 0 ? 'dead' : '', this.player.state ?? '']
     },
     scale: () => SCALE,
     body: () => PATH_BODY,
@@ -56,6 +69,7 @@ export default {
 </script>
 <style scoped>
 .dead { opacity: .1; }
+.fire { filter: blur(1px); }
 
 .up { transform: rotate(-90deg); }
 .right { transform: none; }

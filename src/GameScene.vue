@@ -31,7 +31,7 @@ import {
   MIN_X, MIN_Y, WIDTH, HEIGHT, MAP_WIDTH, MAP_HEIGHT, SCALE,
   KEY_TYPES, MOVEMENTS, KEY_MAP,
   ACTION_DURATION, ACTION_RELOAD,
-  DEFAULT_P1, DEFAULT_P2,
+  DEFAULT_P1, DEFAULT_P2, FIRE_TIMEOUT,
 } from './utils/constants'
 import { isAttackAverted, isAttackingBody, isFacingPlayer, isFacingWalls } from './utils/conditions'
 import { MAP_1 } from './utils/maps'
@@ -42,6 +42,8 @@ export default {
     map: MAP_1,
     p1: DEFAULT_P1,
     p2: DEFAULT_P2,
+    p1Timeout: null,
+    p2Timeout: null,
   }),
 
   created() {
@@ -56,7 +58,32 @@ export default {
     viewBox: () => [MIN_X, MIN_Y, WIDTH, HEIGHT].map((d) => d*SCALE).join(' '),
     mapHeight: () => MAP_HEIGHT * SCALE,
     mapWidth: () => MAP_WIDTH * SCALE,
-    scale:() => SCALE
+    scale: () => SCALE,
+    p1OnFire() { return this.map[this.p1.y - 1][this.p1.x - 1] === 'f' },
+    p2OnFire() { return this.map[this.p2.y - 1][this.p2.x - 1] === 'f' },
+  },
+
+  watch: {
+    p1OnFire(isOnFire) {
+      if (isOnFire) {
+        this.p1.state = 'fire';
+        clearTimeout(this.p1Timeout);
+      } else {
+        this.p1Timeout = setTimeout(() => {
+          this.p1.state = null
+        }, FIRE_TIMEOUT);
+      }
+    },
+    p2OnFire(isOnFire) {
+      if (isOnFire) {
+        this.p2.state = 'fire';
+        clearTimeout(this.p2Timeout);
+      } else {
+        this.p2Timeout = setTimeout(() => {
+          this.p2.state = null
+        }, FIRE_TIMEOUT);
+      }
+    }
   },
 
   methods: {
