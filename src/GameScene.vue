@@ -31,7 +31,7 @@ import {
   MIN_X, MIN_Y, WIDTH, HEIGHT, MAP_WIDTH, MAP_HEIGHT, SCALE,
   KEY_TYPES, MOVEMENTS, KEY_MAP,
   ACTION_DURATION, ACTION_RELOAD,
-  DEFAULT_P1, DEFAULT_P2, FIRE_TIMEOUT,
+  DEFAULT_P1, DEFAULT_P2, FIRE_TIMEOUT, MOVEMENT_RELOAD,
 } from './utils/constants'
 import { isAttackAverted, isAttackingBody, isFacingPlayer, isFacingWalls } from './utils/conditions'
 import { MAP_1 } from './utils/maps'
@@ -59,29 +59,35 @@ export default {
     mapHeight: () => MAP_HEIGHT * SCALE,
     mapWidth: () => MAP_WIDTH * SCALE,
     scale: () => SCALE,
-    p1OnFire() { return this.map[this.p1.y - 1][this.p1.x - 1] === 'f' },
-    p2OnFire() { return this.map[this.p2.y - 1][this.p2.x - 1] === 'f' },
+    p1Location() { return this.map[this.p1.y - 1][this.p1.x - 1] },
+    p2Location() { return this.map[this.p2.y - 1][this.p2.x - 1] },
   },
 
   watch: {
-    p1OnFire(isOnFire) {
-      if (isOnFire) {
-        this.p1.state = 'fire';
-        clearTimeout(this.p1Timeout);
+    p1Location(location) {
+      if (location === 'f') {
+        this.p1.state = 'fire'
+        clearTimeout(this.p1Timeout)
+      } else if (location === 'w') {
+        this.p1.state = null
+        clearTimeout(this.p1Timeout)
       } else {
         this.p1Timeout = setTimeout(() => {
           this.p1.state = null
-        }, FIRE_TIMEOUT);
+        }, FIRE_TIMEOUT)
       }
     },
-    p2OnFire(isOnFire) {
-      if (isOnFire) {
-        this.p2.state = 'fire';
-        clearTimeout(this.p2Timeout);
+    p2Location(location) {
+      if (location === 'f') {
+        this.p2.state = 'fire'
+        clearTimeout(this.p2Timeout)
+      } else if (location === 'w') {
+        this.p2.state = null
+        clearTimeout(this.p2Timeout)
       } else {
         this.p2Timeout = setTimeout(() => {
           this.p2.state = null
-        }, FIRE_TIMEOUT);
+        }, FIRE_TIMEOUT)
       }
     }
   },
@@ -111,7 +117,9 @@ export default {
       [this.p1, this.p2].forEach((player) => {
         const keyPressType = KEY_TYPES.find((type) => KEY_MAP[player.name][type].includes(code))
         if (keyPressType) {
-          if (MOVEMENTS.includes(keyPressType)) {
+          if (!player.isMoving && MOVEMENTS.includes(keyPressType)) {
+            player.isMoving = true
+            setTimeout(() => player.isMoving = false, MOVEMENT_RELOAD)
             player.direction = keyPressType
             if (this.isPathClearFor(player)) {
               switch (keyPressType) {
